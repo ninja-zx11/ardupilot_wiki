@@ -19,8 +19,8 @@ Specifications
 
 -  **Processor**
 
-   -  STM32F7 ARM
-   -  512KB flash
+   -  STM32F745VG ARM
+   -  1MB of Flash memory
 
 
 -  **Sensors**
@@ -28,8 +28,7 @@ Specifications
    -  InvenSense MPU6000 IMU (accel, gyro) with vibration isolation
    -  InvenSense ICM20608 IMU (accel, gyros, compass) with vibration isolation
    -  BMP280 barometer
-   -  Voltage and current sensor
-
+   
 
 -  **Interfaces**
 
@@ -39,11 +38,49 @@ Specifications
    -  I2C port for external compass
    -  USB port
    -  Built-in OSD
+   -  Voltage and Current sensing inputs (Needs external current sensor)
 
 
 -  **Size and Dimensions**
 
    - 36mm x 36mm
+   
+   
+   Board Connections
+==================
+GPS is attached to UART6
+
+Telem is available at UART 1
+
+The shared UART3/I2C pins are enabled only for I2C operation to allow external compass or digital airspeed sensor attachment.If at least one device attached externally, does not have pull-up resistors, then 2K ohm pull-up resistors will need to be added externally.
+
+
+Configuration
+-------------
+Enable Battery monitor with these settings :
+
+BATT_MONITOR=4
+
+Then reboot.
+
+BATT_VOLT_PIN 13
+
+BATT_AMP_OFFSET 0.008
+
+BATT_CURR_PIN 12
+
+BATT_VOLT_MULT 10.925
+
+BATT_AMP_PERVLT 58.0 (note, this value is valid if using Matek Systems FCHUB A5 current sensor)...will need to be calibrated to match actual current if using any other make of PDB board)
+
+
+Using Tx1 pad for frsky S port tekemetry:
+========================================
+SERIAL1_BAUD,57
+SERIAL1_OPTIONS,7
+SERIAL1_PROTOCOL,10
+With the above settings (only available on dev versions so far.June 2019), one can run telemetry screipts (like yaapu scriot) on Frsky radios without the any need of serial conver cables.Just connect S port of receiver to Tx1 pad and Sbus of receiver to RC pad of the board.
+
 
 
 Where to Buy
